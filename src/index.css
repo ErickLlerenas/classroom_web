@@ -1,8 +1,8 @@
 .fab {
   margin: 0px !important;
   top: auto !important;
-  right: 75px !important;
-  bottom: 75px !important;
+  right: 40px !important;
+  bottom: 40px !important;
   left: auto !important;
   position: fixed !important;
   background-color: #00bb2d !important;
@@ -21,7 +21,7 @@ body {
   min-height: 100%;
   background-color: #fafafa;
   font-family: "Roboto";
-  margin-bottom: 50px;
+  margin-bottom: 25px;
 }
 h2 {
   color: #333;
@@ -34,9 +34,4 @@ h2 {
   font-size: 1.5em;
 }
 
-.bottom-navigation-bar {
-    position: fixed !important;
-    bottom: 0 !important;
-    width: 100% !important;
-    box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.25);;
-}
+
