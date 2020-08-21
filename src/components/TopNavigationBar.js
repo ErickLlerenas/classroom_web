@@ -13,7 +13,7 @@ export default function TopNavigationBar() {
   };
 
   return (
-    <Paper className="">
+    <Paper className="app-bar">
       <Tabs
         value={value}
         onChange={handleChange}
@@ -21,9 +21,9 @@ export default function TopNavigationBar() {
         textColor="primary"
         centered
       >
-        <Tab label="Tareas pendientes" component={Link} to="/"/>
-        <Tab label="Tareas entregadas" component={Link} to="/tareas-entregadas" />
-        <Tab label="Calificaciones" component={Link} to="/calificaciones" />
+        <Tab label="Tareas pendientes" component={Link} to="/" className="labels"/>
+        <Tab label="Tareas entregadas" component={Link} to="/tareas-entregadas"className="labels" />
+        <Tab label="Calificaciones" component={Link} to="/calificaciones" className="labels"/>
       </Tabs>
     </Paper>
   );
