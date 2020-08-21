@@ -75,7 +75,7 @@ export default function SignIn() {
           <div style={{ textAlign: "center" }}>
             <Router>
               <Link
-                to="/signup"
+                to="/crear-cuenta"
                 variant="body1"
                 style={{ textAlign: "center" }}
               >
