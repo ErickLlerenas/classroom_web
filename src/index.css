@@ -1,11 +1,14 @@
 .fab {
   margin: 0px !important;
   top: auto !important;
-  right: 40px !important;
-  bottom: 40px !important;
+  right: 50px !important;
+  bottom: 50px !important;
   left: auto !important;
   position: fixed !important;
   background-color: #00bb2d !important;
+}
+.new-task-btn{
+  background-color: #6C63FF !important;
 }
 
 .card {
@@ -16,28 +19,199 @@
 html,
 body {
   position: relative;
-  margin:0;
-  padding:0;
+  margin: 0;
+  padding: 0;
   min-height: 100%;
   background-color: #fafafa;
   font-family: "Roboto";
-  margin-bottom: 25px;
 }
 h2 {
-  color: #333;
+  color: #444;
   text-align: center;
-  font-size: 2em;
+  font-size: 1.75em;
 }
+.name {
+  color: #555;
+  font-size: 1.25em !important;
+  text-align: center;
+}
+
 .welcome {
   color: #555;
   text-align: center;
-  font-size: 1.5em;
+  font-size: 1.25em;
 }
 
-.app-bar{
-    background-color: #2196F3 !important;
+.app-bar {
+  background-color: #6C63FF !important;
 }
-.labels{
-    color:white !important;
+.app-bar-admin {
+  background-color: #F50057 !important;
+}
+.labels {
+  color: white !important;
+  font-size: 0.75em !important;
 }
 
+.button {
+  margin-bottom: 20px !important;
+  background-color: #00bb2d !important;
+}
+a {
+  margin: 0 auto;
+  display: block;
+  text-decoration: none;
+}
+.responsive-img{
+  display: block !important;
+  width: 75% !important;
+  margin: 0 auto !important;
+  text-align: center !important;
+}
+
+.margin-top{
+  margin-top: 100px !important;
+}
+.teacher {
+  width: 100px !important;
+  height: 100px !important;
+  border-radius: 100% !important;
+  object-fit: cover;
+  margin: 0 auto;
+  display: block;
+}
+.margin {
+  margin-bottom: 20px !important;
+}
+.title {
+  font-size: 1.5em !important;
+  color: #555 !important;
+}
+
+.text-field {
+  width: 100% !important;
+  margin: 20px 0px !important;
+  background-color: white;
+}
+
+.upload {
+  width: 100%;
+  height: 200px;
+  margin-top: 20px !important;
+}
+
+.center {
+  margin: 0 auto !important;
+  display: block !important;
+  margin-top: 20px !important;
+}
+.create-btn{
+  margin: 0 auto !important;
+  display: block !important;
+  margin-bottom: 30px !important;
+  width: 100% !important;
+  background-color: #6C63FF !important;
+}
+.date-picker {
+  padding: 18px !important;
+  border-radius: 5px;
+  border: 1px solid rgb(201, 201, 201);
+  margin: 20px 0px !important;
+  color: #7a7a7a;
+  font-size: 1em !important;
+}
+.date-picker:hover{
+  border: 1px solid rgb(17, 17, 17) !important;  
+}
+
+table {
+  width: 100%;
+  margin: 20px 0px;
+}
+th {
+  text-align: left;
+}
+
+.entrar{
+  margin: 10px 0px !important;
+  padding: 12px 0px !important;
+}
+.entrar-loading{
+  margin: 10px 0px !important;
+  padding: 25px 0px !important;
+  border-radius: 5px;
+}
+.task-loading{
+  margin-bottom: 30px !important;
+  padding: 20px 0px !important;
+  border-radius: 5px;
+}
+.settings-icon{
+  margin: 0px !important;
+  top: auto !important;
+  right: 25px !important;
+  top: 25px !important;
+  position: fixed !important;
+}
+td,th {
+  padding: 20px 20px;
+}
+.circular-progress{
+  margin: 0 auto !important;
+  display: block !important; 
+}
+.center-text{
+  text-align: center !important;
+  font-size: 1em !important;
+  color: #777;
+
+}
+.delivered-icon{
+  font-size: 200px !important;
+  color:grey !important;
+  margin: 0 auto !important;
+  display:block !important;
+  margin-top: 100px !important;
+}
+
+@media only screen and (max-width: 600px) {
+  .responsive {
+    overflow-x:auto !important;
+  }
+  .card{
+    padding: 0;
+    margin: 20px 0px;
+  }
+  .fab {
+    right: 25px !important;
+    bottom: 25px !important;
+
+  }
+  .name {
+    font-size: 1em !important;
+  }
+  .settings-icon{
+    right: 5px !important;
+  top: 5px !important;
+  }
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
