@@ -20,7 +20,7 @@ import Icon from "@material-ui/core/Icon";
 import LinkIcon from '@material-ui/icons/Link';
 import LinearProgress from "@material-ui/core/LinearProgress";
 
-function Task({ title, description, deliveryDate, index ,links,fileURL,id}) {
+function Task({ title, description, deliveryDate, index ,links,taskURL,id}) {
   const user = localStorage.getItem("userName");
   const [userName] = useState(user);
   const classes = useStyles();
@@ -158,10 +158,10 @@ function Task({ title, description, deliveryDate, index ,links,fileURL,id}) {
         <CardContent>
           <Grid container spacing={3}>
             <Grid item xs={3}>
-              {fileURL&&<Button
+              {taskURL&&<Button
                 variant="outlined"
                 color="primary"
-                href={fileURL}
+                href={taskURL}
                 startIcon={<AssignmentReturnedIcon />}
                 className="margin"
               >

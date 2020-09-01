@@ -49,7 +49,7 @@ export default function AdminTasks() {
         {loading && <CircularProgress className="circular-progress" />}
         {!loading && tasks.length===0 && <div>
           <ErrorOutlineIcon className="delivered-icon"/>
-          <p className="center-text">No haz creado ninguna tarea todavía. Crea una nueva tarea.</p>
+          <p className="center-text">No ha creado ninguna tarea todavía. Crea una nueva tarea.</p>
           </div>}
         {tasks.map((task) => (
           <TaskAdmin
@@ -59,6 +59,7 @@ export default function AdminTasks() {
             key={task.id}
             id={task.id}
             links={task.links}
+            fileURL={task.ref}
           />
         ))}
       </Container>

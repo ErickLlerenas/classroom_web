@@ -4,7 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import { db } from "../firebase";
-// import { storage } from "../firebase";
+import { storage } from "../firebase";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import TopNavigationBarAdmin from "../components/TopNavigationBarAdmin";
@@ -19,25 +19,24 @@ export default function AdminNewTask() {
   const [loading, setLoading] = useState(false);
   const [passWord, setPassWord] = useState(pass);
   const [date, setDate] = useState(null);
-  const [ID,setID] = useState(0);
-  // const [files, setFiles] = useState({
-  //   file: null,
-  //   url: "",
-  // });
+  const [ID, setID] = useState(0);
+  const [files, setFiles] = useState({
+    file: null,
+    url: "",
+  });
 
   useEffect(() => {
     const getPassWord = () => {
       if (passWord !== null) setPassWord(passWord);
     };
     getPassWord();
-    getTasksLength(); 
+    getTasksLength();
   }, [passWord]);
 
   const handleDate = (date) => {
     setDate(date);
   };
   const handleChange = (e) => {
-    console.log(e.target.name, ":", e.target.value);
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
@@ -45,22 +44,25 @@ export default function AdminNewTask() {
     history.push("/maestra-adriana-tareas");
   };
 
-  const getTasksLength = ()=>{
+  const getTasksLength = () => {
     let temp = [];
-    db.collection('tasks').get().then((query)=>{
-      query.forEach((doc)=>{
-        temp.push(doc)
-      })
-      setID(temp.length);
-    })
-  }
-  const addTask = async (e) => {
-    e.preventDefault();
+    db.collection("tasks")
+      .get()
+      .then((query) => {
+        query.forEach((doc) => {
+          temp.push(doc);
+        });
+        setID(temp.length);
+      });
+  };
+  const addTask = async (url) => {
     setLoading(true);
     let temp = values;
     temp.deliveryDate = date;
-    temp.id = ID.toString()
+    temp.id = ID.toString();
+    if (url) temp.ref = url;
     addTaskstoStudents(temp);
+    console.log("ID", ID.toString());
     await db
       .collection("tasks")
       .doc(ID.toString())
@@ -111,46 +113,48 @@ export default function AdminNewTask() {
     let tempTask = [...currentTask];
     tempTask.push(temp);
     db.collection("students").doc(user).update({
-      tasks: tempTask
+      tasks: tempTask,
     });
   };
 
-  // const uploadFiles = () => {
-  //   const { file } = files;
-  //   const uploadTask = storage.ref(title + '/' + userName + ' '+ file.name).put(file);
-  //   uploadTask.on(
-  //     "state_changed",
-  //     (snapshot) => {
-  //       setLoading(true);
-  //     },
-  //     (error) => {
-  //       Swal.fire({
-  //         title: "No se ha podido subir el archivo",
-  //         text: "Revisa tu conexión a internet",
-  //         icon: "warning",
-  //         confirmButtonText: "Reintentar",
-  //       });
-  //     },
-  //     (complete) => {
-  //       setLoading(false);
-  //       setIsSent(true);
-  //       storage
-  //         .ref(title)
-  //         .child(userName + ' ' + file.name)
-  //         .getDownloadURL()
-  //         .then((url) => {
-  //           sendHomeWork(url);
-  //           Swal.fire({
-  //             title: "¡Tarea enviada!",
-  //             text: "Tu tarea ha sido enviada correctamente",
-  //             icon: "success",
-  //             confirmButtonText: "Volver",
-  //           });
-  //         });
-       
-  //     }
-  //   );
-  // };
+  const handleFileChange = (e) => {
+    if (e.target.files[0]) {
+      const file = e.target.files[0];
+      setFiles({ file });
+      console.log(file);
+    }
+  };
+
+  const uploadFile = (e) => {
+    e.preventDefault();
+    const { file } = files;
+    if (file) {
+      const uploadTask = storage.ref("tasks/" + file.name).put(file);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {},
+        (error) => {
+          Swal.fire({
+            title: "No se ha podido subir el archivo",
+            text: "Revisa tu conexión a internet",
+            icon: "warning",
+            confirmButtonText: "Reintentar",
+          });
+        },
+        (complete) => {
+          storage
+            .ref("tasks")
+            .child(file.name)
+            .getDownloadURL()
+            .then((url) => {
+              addTask(url);
+            });
+        }
+      );
+    } else {
+      addTask();
+    }
+  };
 
   if (!passWord) return <Redirect to="/" />;
 
@@ -160,7 +164,7 @@ export default function AdminNewTask() {
       <Container maxWidth="md">
         <Card className="responsive card">
           <h2>Nueva tarea</h2>
-          <form onSubmit={addTask} autoComplete="off">
+          <form onSubmit={uploadFile} autoComplete="off">
             <TextField
               color="secondary"
               id="outlined-basic"
@@ -190,14 +194,14 @@ export default function AdminNewTask() {
               onChange={handleDate}
               placeholderText="Fecha de entrega *"
             />
-            
+
             <label htmlFor="upload-file">
               <input
                 style={{ display: "none" }}
                 id="upload-file"
                 name="upload-file"
                 type="file"
-                onChange={handleChange}
+                onChange={handleFileChange}
               />
 
               <Button
@@ -208,7 +212,7 @@ export default function AdminNewTask() {
                 className="add-file-btn"
                 component="span"
               >
-                Agregar un archivo (Opcional)
+                {files.file ? files.file.name : "Agregar un archivo (Opcional)"}
               </Button>
             </label>
             <TextField

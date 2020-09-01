@@ -5,6 +5,7 @@ import { Redirect } from "react-router-dom";
 import { db } from "../firebase";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import DoneTasksAdmin from "../components/DoneTasksAdmin";
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
 export default function AdminDoneTasks() {
   const user = localStorage.getItem("pass");
@@ -72,13 +73,14 @@ export default function AdminDoneTasks() {
           <span role="img" />
           🧐
         </p>
-        {loading ? (
-          <CircularProgress className="circular-progress" />
-        ) : (
-          doneTasks.map((tasks) => (
+        {loading && <CircularProgress className="circular-progress" />}
+        {!loading && doneTasks.length===0 && <div>
+          <ErrorOutlineIcon className="delivered-icon"/>
+          <p className="center-text">No hay ninguna tarea entregada aún.</p>
+          </div>}
+          {doneTasks.map((tasks) => (
             <DoneTasksAdmin tasks={tasks} key={tasks.id} />
-          ))
-        )}
+          ))}
       </Container>
     </Fragment>
   );

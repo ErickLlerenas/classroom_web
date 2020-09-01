@@ -39,7 +39,7 @@ function WhatsAppButton({userName}) {
       > 
       <DialogContent>
       <h2 className="name">Maestra Adriana</h2>
-      <img src={require('../assets/teacher.jpeg')} alt="Teacher" className="teacher"></img>
+      <img src={require('../assets/teacher.png')} alt="Teacher" className="teacher"></img>
       </DialogContent>
         <h2 className="center-text">
           Hola, ¿Tienes alguna duda?

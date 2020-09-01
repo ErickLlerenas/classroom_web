@@ -69,6 +69,7 @@ export default function Tasks() {
             id={task.id}
             userName={userName}
             links={task.links}
+            taskURL={task.ref}
           />
         ))}
       </Container>

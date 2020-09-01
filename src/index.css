@@ -50,13 +50,16 @@ h2 {
 .add-file-btn{
   width: 100%;
   background-color: white !important;
-  color: rgb(100, 100, 100) !important;
+  color: #444 !important;
   padding: 14px 15px !important;
   font-weight: normal !important;
   box-shadow: 0px 0px 0px 0px !important;
   border: 1px solid rgb(177, 177, 177) !important;
   display: inline-block !important;
   text-transform: none !important
+}
+input{
+  color: #444 !important;
 }
 .app-bar {
   background-color: #6C63FF !important;
@@ -117,7 +120,9 @@ a {
   width: 100% !important;
   margin: 20px 0px !important;
   background-color: white;
+  color:#555 !important;
 }
+
 
 .save-button{
   display: block !important;

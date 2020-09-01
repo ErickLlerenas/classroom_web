@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch,Redirect } from "react-router-dom";
 import SignIn from "./pages/SignIn";
 import SignInAdmin from "./pages/SingInAdmin";
 import Tasks from "./pages/Tasks";
@@ -23,6 +23,7 @@ export default function App() {
           <Route exact path="/maestra-adriana-nueva-tarea" component={AdminNewTask} />
           <Route exact path="/maestra-adriana-calificaciones" component={AdminCalifications} />
           <Route exact path="/maestra-adriana-tareas-entregadas" component={AdminDoneTasks} />
+          <Route render={() => <Redirect to={{pathname: "/"}} />} />
         </Switch>
       </Router>
   );
