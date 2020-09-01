@@ -44,8 +44,7 @@ export default function AdminDoneTasks() {
             });
           });
           temp.push(data);
-          console.log(temp);
-          setDoneTasks(temp);
+          setDoneTasks([...temp]);
         });
     };
     getUser();
