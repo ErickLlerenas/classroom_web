@@ -6,21 +6,31 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Task from "../components/Task";
 import { db } from "../firebase";
 import {Redirect} from 'react-router-dom';
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
 
 export default function Tasks() {
   const user = localStorage.getItem('userName');
-  const [tasks, setTasks] = useState([]);
+  const [tasks,setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [userName,setUserName] = useState(user);
 
   useEffect(() => {
+    const getUserTasks = () => {
+      db.collection("students").doc(userName).get().then((data)=>{
+        if(data.data()!==undefined){
+          setTasks(data.data().tasks.reverse());
+          setLoading(false);
+        }
+      });
+    };
+
     const getUser = ()=>{
       if(userName!==null)
       setUserName(titleCase(userName));
     }
     getUser();
-    getTasks();
-  }, [userName]);
+    getUserTasks();
+  }, [userName,tasks]);
 
   const titleCase = (name) => {
     return name
@@ -30,17 +40,6 @@ export default function Tasks() {
         return word.charAt(0).toUpperCase() + word.slice(1);
       })
       .join(" ");
-  };
-
-  const getTasks = async () => {
-    db.collection("tasks").onSnapshot((querySnapshot) => {
-      const temp = [];
-      querySnapshot.forEach((doc) => {
-        temp.push({ ...doc.data(), id: doc.id });
-      });
-      setTasks(temp);
-      setLoading(false);
-    });
   };
   
   if(!userName) return <Redirect to="/"/>
@@ -56,18 +55,24 @@ export default function Tasks() {
           😇
         </p>
         {loading && <CircularProgress className="circular-progress" />}
-        {tasks.map((task) => (
+        {!loading && tasks.length===0 && <div>
+          <AccessTimeIcon className="delivered-icon"/>
+          <p className="center-text">¡Felicidades! No tienes ninguna tarea pendiente.</p>
+          </div>}
+        {tasks.map((task,index) => (
           <Task
+            index={index}
             title={task.title}
             description={task.description}
-            uploadDate={task.uploadDate}
-            key={task.id}
+            deliveryDate={task.deliveryDate}
+            key={task.title}
             id={task.id}
             userName={userName}
+            links={task.links}
           />
         ))}
       </Container>
-      <WhatsAppButton />
+      <WhatsAppButton userName={titleCase(userName)}/>
     </Fragment>
   );
 }

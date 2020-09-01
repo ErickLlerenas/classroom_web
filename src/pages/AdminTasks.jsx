@@ -29,7 +29,7 @@ export default function AdminTasks() {
       querySnapshot.forEach((doc) => {
         temp.push({ ...doc.data(), id: doc.id });
       });
-      setTasks(temp);
+      setTasks(temp.reverse());
       setLoading(false);
     });
   };
@@ -58,6 +58,7 @@ export default function AdminTasks() {
             deliveryDate={task.deliveryDate}
             key={task.id}
             id={task.id}
+            links={task.links}
           />
         ))}
       </Container>

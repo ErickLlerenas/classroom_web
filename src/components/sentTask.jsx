@@ -12,10 +12,16 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import AssignmentReturnedIcon from "@material-ui/icons/AssignmentReturned";
 
-export default function TaskAdmin({ title, description, deliveryDate,links,fileURL }) {
+export default function SentTask({ title, description, deliveryDate,url,links}) {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
-  const [options] = useState({ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})
+
+  const [options] = useState({
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -29,9 +35,17 @@ export default function TaskAdmin({ title, description, deliveryDate,links,fileU
         </Typography>
 
         <Typography color="textSecondary" className="margin">
-          Fecha de entrega: {deliveryDate!==undefined &&  deliveryDate.toDate().toLocaleTimeString('es-MX',options).slice(0,-8)}
+          Fecha de entrega:{" "}
+          {deliveryDate !== undefined &&
+            deliveryDate.toDate().toLocaleTimeString("es-MX", options)}
         </Typography>
         <Typography color="textSecondary">{description}</Typography>
+        <a download href={url}>
+        <Button variant="outlined"
+                color="secondary"
+                startIcon={<AssignmentReturnedIcon />}
+                className="margin-top-btn">Tu tarea</Button>
+        </a>
       </CardContent>
       <CardActions disableSpacing>
         <IconButton
@@ -49,19 +63,18 @@ export default function TaskAdmin({ title, description, deliveryDate,links,fileU
         <CardContent>
           <Grid container spacing={3}>
             <Grid item xs={3}>
-            {fileURL&&<Button
+              <Button
                 variant="outlined"
                 color="primary"
-                href={fileURL}
                 startIcon={<AssignmentReturnedIcon />}
                 className="margin"
               >
                 TAREA
-              </Button>}
+              </Button>
               
               {links&&<Button
-                variant="outlined"
                 href={links}
+                variant="outlined"
                 color="primary"
                 target="_blank"
               >
@@ -69,6 +82,7 @@ export default function TaskAdmin({ title, description, deliveryDate,links,fileU
               </Button>}
             </Grid>
           </Grid>
+          
         </CardContent>
       </Collapse>
     </Card>
@@ -96,4 +110,3 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "red[500]",
   },
 }));
-

@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import Fab from "@material-ui/core/Fab";
 import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 import Dialog from '@material-ui/core/Dialog';
@@ -12,8 +12,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function WhatsAppButton() {
-  const [open, setOpen] = React.useState(false);
+function WhatsAppButton({userName}) {
+  const [open, setOpen] = useState(false);
+  const [message] = useState(`https://wa.me/+523123204287?text=Hola maestra Adriana buen día! Soy ${userName} tengo una duda sobre...`)
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -37,7 +38,7 @@ function WhatsAppButton() {
         aria-describedby="alert-dialog-slide-description"
       > 
       <DialogContent>
-      <h2 className="name">Adriana Josefina Michelle Lopez</h2>
+      <h2 className="name">Maestra Adriana</h2>
       <img src={require('../assets/teacher.jpeg')} alt="Teacher" className="teacher"></img>
       </DialogContent>
         <h2 className="center-text">
@@ -49,7 +50,7 @@ function WhatsAppButton() {
           </p>
         </DialogContent>
         <DialogActions>
-          <a href="https://wa.me/+523121811727?text=Hola Soy Erick me interesa saber blablablabla" target="_blank" rel="noopener noreferrer">
+          <a href={message} target="_blank" rel="noopener noreferrer">
           <Button onClick={handleClose} color="primary" variant="contained" endIcon={<Icon>send</Icon>} className="button">
             Mensajear
           </Button>

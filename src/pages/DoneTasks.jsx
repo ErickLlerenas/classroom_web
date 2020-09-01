@@ -5,7 +5,7 @@ import TopNavigationBar from "../components/TopNavigationBar";
 import { Redirect } from 'react-router-dom';
 import { db } from "../firebase";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Task from "../components/Task";
+import SentTask from "../components/sentTask";
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
 export default function DoneTasks() {
@@ -20,7 +20,7 @@ export default function DoneTasks() {
       docRef.get().then((doc)=>{
         if(doc.exists){
           console.log(doc.data());
-          setDoneTasks(doc.data().doneTasks);
+          setDoneTasks(doc.data().doneTasks.reverse());
           setLoading(false);
         }else{
           console.log(doc.exists)
@@ -63,10 +63,10 @@ export default function DoneTasks() {
           <p className="center-text">No tienes ninguna tarea entregada todavía</p>
           </div>}
         {doneTasks.map((task)=>(
-          <Task title={task.title} description={task.description} key={task.id}/>
+          <SentTask title={task.title} description={task.description} key={task.id} deliveryDate={task.deliveryDate} url={task.ref} links={task.links}/>
         ))}
       </Container>
-      <WhatsAppButton />
+      <WhatsAppButton userName={titleCase(userName)}/>
     </Fragment>
   );
 }

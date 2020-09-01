@@ -1,21 +1,21 @@
 import React, { Fragment, useState, useEffect } from "react";
-import TopNavigationBar from "../components/TopNavigationBar";
+import TopNavigationBarAdmin from "../components/TopNavigationBarAdmin";
 import Card from "@material-ui/core/Card";
 import Container from "@material-ui/core/Container";
-import WhatsAppButton from "../components/WhatsAppButton";
 import { Redirect } from "react-router-dom";
 import { db } from "../firebase";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import TableInputs from "../components/TableInputs";
 
-export default function Califications() {
-  const user = localStorage.getItem("userName");
-  const [userName, setUserName] = useState(user);
+export default function AdminCalifications() {
+  const user = localStorage.getItem("pass");
+  const [passWord, setpassWord] = useState(user);
   const [califications, setCalifications] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getUser = () => {
-      if (userName !== null) setUserName(titleCase(userName));
+      if (passWord !== null) setpassWord(titleCase(passWord));
     };
     const getCalifications = async () => {
       db.collection("students").onSnapshot((querySnapshot) => {
@@ -30,16 +30,14 @@ export default function Califications() {
     };
     getUser();
     getCalifications();
-  }, [userName]);
+  }, [passWord]);
 
   // const initializeCalifications = (user)=>{
   //   db.collection("students").doc(user).update({
   //     calification:0,
   //     homework:0,
   //     participations:0,
-  //     exam:0,
-  //     tasks:[],
-  //     doneTasks:[]
+  //     exam:0
   // })
   // }
   const titleCase = (name) => {
@@ -52,45 +50,45 @@ export default function Califications() {
       .join(" ");
   };
 
-
-  if (!userName) return <Redirect to="/" />;
+  if (!passWord) return <Redirect to="/" />;
   return (
     <Fragment>
-      <TopNavigationBar index={2} />
+      <TopNavigationBarAdmin index={2} />
       <Container maxWidth="md">
-        <h2>¡Hola {userName}!</h2>
+        <h2>¡Hola maestra Adriana!</h2>
         <p className="welcome">
           Estas son las calificaciones.
           <span role="img" />
           🧐
         </p>
-        {loading ? <CircularProgress className="circular-progress" />:
-        <Card className="responsive card">
-          <table>
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>Tareas</th>
-                <th>Examen</th>
-                <th>Participaciones</th>
-                <th>Calificación</th>
-              </tr>
-            </thead>
-            <tbody>
-              {califications.map((calification) => (
-                <tr key={calification.id}>
-                  <td>{calification.id}</td>
-                  <td>{calification.homework}</td>
-                  <td>{calification.exam}</td>
-                  <td>{calification.participations}</td>
-                  <td>{calification.calification}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </Card>}
+        {loading ? (
+          <CircularProgress className="circular-progress" />
+        ) : (
+          <Card className="responsive card">
+            <form>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Tareas</th>
+                    <th>Examen</th>
+                    <th>Participaciones</th>
+                    <th>Calificación</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {califications.map((calification) => (
+                    <TableInputs
+                      calification={calification}
+                      key={calification.id}
+                    />
+                  ))}
+                </tbody>
+              </table>
+            </form>
+          </Card>
+        )}
       </Container>
-      <WhatsAppButton userName={titleCase(userName)}/>
     </Fragment>
   );
 }

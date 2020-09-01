@@ -21,7 +21,6 @@ export default function SignIn() {
     var docRef = db.collection("students").doc(user);
     docRef.get().then(function (doc) {
       if (doc.exists) {
-        localStorage.setItem("userData", JSON.stringify(doc.data()));
         localStorage.setItem("userName", user);
         history.push("/tareas");
       } else {
@@ -47,7 +46,7 @@ export default function SignIn() {
       </IconButton>
       <img src={bg} alt="background" className="responsive-img margin-top" />
       <h2>Ingresa con tu nombre</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} autoComplete="off">
         <TextField
           variant="outlined"
           margin="normal"

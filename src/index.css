@@ -8,7 +8,7 @@
   background-color: #00bb2d !important;
 }
 .new-task-btn{
-  background-color: #6C63FF !important;
+  background-color: #303F9F !important;
 }
 
 .card {
@@ -41,7 +41,23 @@ h2 {
   text-align: center;
   font-size: 1.25em;
 }
-
+.file-name{
+  color: #555;
+  text-align: center;
+  display: block;
+  margin: 0 auto;
+}
+.add-file-btn{
+  width: 100%;
+  background-color: white !important;
+  color: rgb(100, 100, 100) !important;
+  padding: 14px 15px !important;
+  font-weight: normal !important;
+  box-shadow: 0px 0px 0px 0px !important;
+  border: 1px solid rgb(177, 177, 177) !important;
+  display: inline-block !important;
+  text-transform: none !important
+}
 .app-bar {
   background-color: #6C63FF !important;
 }
@@ -83,6 +99,15 @@ a {
 .margin {
   margin-bottom: 20px !important;
 }
+.margin-top-btn{
+  margin-top: 20px !important;
+}
+.cal{
+  width:50px;
+  padding: 10px;
+  border: 1px solid grey;
+  border-radius: 5px;
+}
 .title {
   font-size: 1.5em !important;
   color: #555 !important;
@@ -94,12 +119,15 @@ a {
   background-color: white;
 }
 
-.upload {
-  width: 100%;
-  height: 200px;
-  margin-top: 20px !important;
+.save-button{
+  display: block !important;
+  margin: 20px auto !important;
 }
-
+.upload-btn{
+  text-align: center;
+  display: block !important;
+  margin: 20px auto !important;
+}
 .center {
   margin: 0 auto !important;
   display: block !important;
@@ -110,7 +138,6 @@ a {
   display: block !important;
   margin-bottom: 30px !important;
   width: 100% !important;
-  background-color: #6C63FF !important;
 }
 .date-picker {
   padding: 18px !important;
@@ -146,6 +173,11 @@ th {
   padding: 20px 0px !important;
   border-radius: 5px;
 }
+.save-loading{
+  padding: 15px 0px !important;
+  border-radius: 5px;
+}
+
 .settings-icon{
   margin: 0px !important;
   top: auto !important;
