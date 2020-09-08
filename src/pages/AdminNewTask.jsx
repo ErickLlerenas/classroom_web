@@ -56,7 +56,6 @@ export default function AdminNewTask() {
       });
   };
   const addTask = async (url) => {
-    setLoading(true);
     let temp = values;
     temp.deliveryDate = date;
     temp.id = ID.toString();
@@ -113,7 +112,7 @@ export default function AdminNewTask() {
     let tempTask = [...currentTask];
     tempTask.push(temp);
     db.collection("students").doc(user).update({
-      tasks: tempTask,
+      tasks: tempTask
     });
   };
 
@@ -127,6 +126,7 @@ export default function AdminNewTask() {
 
   const uploadFile = (e) => {
     e.preventDefault();
+    setLoading(true);
     const { file } = files;
     if (file) {
       const uploadTask = storage.ref("tasks/" + file.name).put(file);
