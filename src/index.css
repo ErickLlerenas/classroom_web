@@ -220,7 +220,7 @@ td,th {
     margin: 20px 0px;
   }
   .fab {
-    right: 25px !important;
+    left: 25px !important;
     bottom: 25px !important;
 
   }

@@ -84,12 +84,12 @@ function Task({ title, description, deliveryDate, index ,links,taskURL,id}) {
     window.location.reload();
   }
   const uploadFiles = () => {
+    setLoading(true);
     const { file } = files;
     const uploadTask = storage.ref(title + '/' + userName + '/'+ file.name).put(file);
     uploadTask.on(
       "state_changed",
       (snapshot) => {
-        setLoading(true);
       },
       (error) => {
         Swal.fire({
