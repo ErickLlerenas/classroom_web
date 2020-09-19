@@ -25,10 +25,7 @@ function Task({ title, description, deliveryDate, index ,links,taskURL,id}) {
   const [userName] = useState(user);
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
-  const [files, setFiles] = useState({
-    file: null,
-    url: "",
-  });
+  const [files, setFiles] = useState([]);
   const [options] = useState({
     weekday: "long",
     year: "numeric",
@@ -37,6 +34,7 @@ function Task({ title, description, deliveryDate, index ,links,taskURL,id}) {
   });
   const [loading, setLoading] = useState(false);
   const [isSent, setIsSent] = useState(false);
+  const [filesCount,setFilesCount] = useState(0);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -46,7 +44,7 @@ function Task({ title, description, deliveryDate, index ,links,taskURL,id}) {
     let tempDoneTasks = [];
     let tempTasks = [];
     const docRef = db.collection("students").doc(userName.toUpperCase());
-    docRef.get().then((doc) => {
+    docRef.get().then(async(doc) => {
       if (doc.exists) {
         tempDoneTasks = [...doc.data().doneTasks];
         tempTasks = [...doc.data().tasks];
@@ -72,9 +70,17 @@ function Task({ title, description, deliveryDate, index ,links,taskURL,id}) {
         tempTasks.splice(index, 1);
         console.log(tempTasks);
         console.log(tempDoneTasks);
-        db.collection("students").doc(userName.toUpperCase()).update({
+        await db.collection("students").doc(userName.toUpperCase()).update({
           doneTasks: tempDoneTasks,
           tasks: tempTasks,
+        });
+        setLoading(false);
+        Swal.fire({
+          title: "¡Tarea entregada!",
+          text: "Tu tarea ha sido entregada correctamente",
+          icon: "success",
+          confirmButtonText: "Volver",
+          onClose: refreshPage
         });
       }
     });
@@ -83,50 +89,55 @@ function Task({ title, description, deliveryDate, index ,links,taskURL,id}) {
   const refreshPage = ()=>{
     window.location.reload();
   }
-  const uploadFiles = () => {
+  const uploadFiles = async ()  => {
+    let urls = [];
     setLoading(true);
-    const { file } = files;
-    const uploadTask = storage.ref(title + '/' + userName + '/'+ file.name).put(file);
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-      },
-      (error) => {
-        Swal.fire({
-          title: "No se ha podido subir el archivo",
-          text: "Revisa tu conexión a internet",
-          icon: "warning",
-          confirmButtonText: "Reintentar",
-        });
-      },
-      (complete) => {
-        setLoading(false);
-        setIsSent(true);
-        storage
-          .ref(title)
-          .child(userName + '/' + file.name)
-          .getDownloadURL()
-          .then((url) => {
-            sendHomeWork(url);
-            Swal.fire({
-              title: "¡Tarea entregada!",
-              text: "Tu tarea ha sido entregada correctamente",
-              icon: "success",
-              confirmButtonText: "Volver",
-              onClose: refreshPage
-            });
+    files.forEach((file,index)=>{
+      const uploadTask =  storage.ref(title + '/' + userName + '/'+ file.name).put(file);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+        },
+        (error) => {
+          Swal.fire({
+            title: "No se ha podido subir el archivo",
+            text: "Revisa tu conexión a internet",
+            icon: "warning",
+            confirmButtonText: "Reintentar",
           });
-       
-      }
-    );
+        },
+        (complete) => {
+          setIsSent(true);
+          storage
+            .ref(title)
+            .child(userName + '/' + file.name)
+            .getDownloadURL()
+            .then((url) => {
+              urls.push(url)
+              setFilesCount(urls.length);
+              console.log(index,url,urls);
+              if(urls.length===files.length){
+                sendHomeWork(urls);
+              }
+            });
+         
+        }
+      );
+    })
+    
   };
 
   const handleChange = (e) => {
-    if (e.target.files[0]) {
-      const file = e.target.files[0];
-      setFiles({ file });
-      console.log(file);
+    if (e.target.files.length>0) {
+      const files = [];
+      for(let i=0;i<e.target.files.length;i++){
+        files.push(e.target.files[i]);
+      }
+      setFiles(files);
+      console.log(files);
     }
+
+    
   };
   return (
     <Card className="card">
@@ -180,13 +191,14 @@ function Task({ title, description, deliveryDate, index ,links,taskURL,id}) {
             </Grid>
           </Grid>
           <Container maxWidth="xs">
-            {files.file === null ? (
+            {files.length === 0 ? (
               <label htmlFor="upload-photo" className="upload-btn">
                 <input
                   style={{ display: "none" }}
                   id="upload-photo"
                   name="upload-photo"
                   type="file"
+                  multiple
                   onChange={handleChange}
                 />
 
@@ -197,15 +209,18 @@ function Task({ title, description, deliveryDate, index ,links,taskURL,id}) {
                   style={{ width: "100%" }}
                   startIcon={<CloudUploadIcon />}
                 >
-                  Subir tarea
+                  Subir fotos
                 </Button>
               </label>
             ) : loading ? (
-              <LinearProgress
+              <div>
+                <LinearProgress
                 className="save-loading"
                 color="secondary"
                 style={{ width: "100%", margin: "20px 0px" }}
               />
+              <p style={{textAlign:'center'}}>{filesCount}/{files.length}</p>
+              </div>
             ) : (
               !isSent && (
                 <div>
@@ -217,9 +232,8 @@ function Task({ title, description, deliveryDate, index ,links,taskURL,id}) {
                   style={{ width: "100%", margin: "20px 0px" }}
                   endIcon={<Icon>send</Icon>}
                 >
-                  Entregar tarea
+                  Entregar {files.length} fotos
                 </Button>
-                <span className="file-name">{files.file.name}</span>
                 </div>
               )
             )}

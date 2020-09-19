@@ -8,13 +8,13 @@ import CardActions from "@material-ui/core/CardActions";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import AssignmentReturnedIcon from "@material-ui/icons/AssignmentReturned";
+import ImageIcon from '@material-ui/icons/Image';
 
-export default function SentTask({ title, description, deliveryDate,url,links}) {
+export default function SentTask({ title, description, deliveryDate,urls,links}) {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
+  console.log("URLS: ",urls);
 
   const [options] = useState({
     weekday: "long",
@@ -40,12 +40,7 @@ export default function SentTask({ title, description, deliveryDate,url,links}) 
             deliveryDate.toDate().toLocaleTimeString("es-MX", options)}
         </Typography>
         <Typography color="textSecondary">{description}</Typography>
-        <a download href={url}>
-        <Button variant="outlined"
-                color="secondary"
-                startIcon={<AssignmentReturnedIcon />}
-                className="margin-top-btn">Tu tarea</Button>
-        </a>
+        
       </CardContent>
       <CardActions disableSpacing>
         <IconButton
@@ -61,27 +56,14 @@ export default function SentTask({ title, description, deliveryDate,url,links}) 
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Grid container spacing={3}>
-            <Grid item xs={3}>
-              <Button
-                variant="outlined"
-                color="primary"
-                startIcon={<AssignmentReturnedIcon />}
-                className="margin"
-              >
-                TAREA
-              </Button>
-              
-              {links&&<Button
-                href={links}
-                variant="outlined"
-                color="primary"
-                target="_blank"
-              >
-                Enlace
-              </Button>}
-            </Grid>
-          </Grid>
+        {urls.map((url,index)=>(
+          <a download href={url} key={index}>
+        <Button variant="outlined"
+                color="secondary"
+                startIcon={<ImageIcon />}
+        className="margin-top-btn">Foto {index+1}</Button>
+        </a>
+        ))}
           
         </CardContent>
       </Collapse>

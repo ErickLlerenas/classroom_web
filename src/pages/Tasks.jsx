@@ -7,12 +7,15 @@ import Task from "../components/Task";
 import { db } from "../firebase";
 import {Redirect} from 'react-router-dom';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import Alert from '@material-ui/lab/Alert';
+// import Button from '@material-ui/core/Button';
 
 export default function Tasks() {
   const user = localStorage.getItem('userName');
   const [tasks,setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [userName,setUserName] = useState(user);
+  const [open,setOpen] = useState(true);
 
   useEffect(() => {
     const getUserTasks = () => {
@@ -47,6 +50,7 @@ export default function Tasks() {
   return (
     <Fragment>
       <TopNavigationBar index={0} />
+      {open&&<Alert severity="warning" onClose={() => {setOpen(false)}}>¡Atención! Necesitas volver a subir todas tus tareas, pero ahora con todas las fotos que se te indican.</Alert>}
       <Container maxWidth="md">
   <h2>¡Hola {userName}!</h2>
         <p className="welcome">

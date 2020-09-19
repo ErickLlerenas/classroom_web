@@ -63,7 +63,7 @@ export default function DoneTasks() {
           <p className="center-text">No tienes ninguna tarea entregada todavía</p>
           </div>}
         {doneTasks.map((task)=>(
-          <SentTask title={task.title} description={task.description} key={task.id} deliveryDate={task.deliveryDate} url={task.ref} links={task.links}/>
+          <SentTask title={task.title} description={task.description} key={task.id} deliveryDate={task.deliveryDate} urls={task.ref} links={task.links}/>
         ))}
       </Container>
       <WhatsAppButton userName={titleCase(userName)}/>
