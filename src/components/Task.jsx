@@ -35,6 +35,7 @@ function Task({ title, description, deliveryDate, index ,links,taskURL,id}) {
   const [loading, setLoading] = useState(false);
   const [isSent, setIsSent] = useState(false);
   const [filesCount,setFilesCount] = useState(0);
+  let hack = 0;
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -71,10 +72,14 @@ function Task({ title, description, deliveryDate, index ,links,taskURL,id}) {
         console.log(tempTasks);
         console.log(newTempTasks);
         console.log(tempDoneTasks);
-        await db.collection("students").doc(userName.toUpperCase()).update({
-          doneTasks: newTempTasks,
-          tasks: tempTasks,
-        });
+        if(hack===0){//There is an error that uploads the tasks twice, so I haven't really know what is going on, but this hack fixes it
+          hack++;
+          await db.collection("students").doc(userName.toUpperCase()).update({
+            doneTasks: newTempTasks,
+            tasks: tempTasks,
+          });
+        }
+        
         setLoading(false);
         Swal.fire({
           title: "¡Tarea entregada!",
