@@ -50,7 +50,7 @@ export default function Tasks() {
   return (
     <Fragment>
       <TopNavigationBar index={0} />
-      {open&&<Alert severity="warning" onClose={() => {setOpen(false)}}>¡Atención! Necesitas volver a subir todas tus tareas, pero ahora con todas las fotos que se te indican.</Alert>}
+      {open&&<Alert severity="warning" onClose={() => {setOpen(false)}}>Sube todas las fotos que se indican.</Alert>}
       <Container maxWidth="md">
   <h2>¡Hola {userName}!</h2>
         <p className="welcome">
