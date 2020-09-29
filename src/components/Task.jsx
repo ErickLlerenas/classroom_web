@@ -17,10 +17,10 @@ import { db } from "../firebase";
 import { storage } from "../firebase";
 import Swal from "sweetalert2";
 import Icon from "@material-ui/core/Icon";
-import LinkIcon from '@material-ui/icons/Link';
+import LinkIcon from "@material-ui/icons/Link";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
-function Task({ title, description, deliveryDate, index ,links,taskURL,id}) {
+function Task({ title, description, deliveryDate, index, links, taskURL, id }) {
   const user = localStorage.getItem("userName");
   const [userName] = useState(user);
   const classes = useStyles();
@@ -34,7 +34,7 @@ function Task({ title, description, deliveryDate, index ,links,taskURL,id}) {
   });
   const [loading, setLoading] = useState(false);
   const [isSent, setIsSent] = useState(false);
-  const [filesCount,setFilesCount] = useState(0);
+  const [filesCount, setFilesCount] = useState(0);
   let hack = 0;
 
   const handleExpandClick = () => {
@@ -45,65 +45,64 @@ function Task({ title, description, deliveryDate, index ,links,taskURL,id}) {
     let tempDoneTasks = [];
     let tempTasks = [];
     const docRef = db.collection("students").doc(userName.toUpperCase());
-    docRef.get().then(async(doc) => {
+    docRef.get().then(async (doc) => {
       if (doc.exists) {
         tempDoneTasks = [...doc.data().doneTasks];
         tempTasks = [...doc.data().tasks];
-        if(links!==undefined){
+        if (links !== undefined) {
           tempDoneTasks.push({
             title: title,
             description: description,
             deliveryDate: deliveryDate,
             id: id,
             ref: url,
-            links: links
-          }) 
-        }else{
+            links: links,
+          });
+        } else {
           tempDoneTasks.push({
             title: title,
             description: description,
             deliveryDate: deliveryDate,
             id: id,
-            ref: url
-          })
+            ref: url,
+          });
         }
-        
+
         let newTempTasks = tempTasks.splice(index, 1);
         console.log(tempTasks);
         console.log(newTempTasks);
         console.log(tempDoneTasks);
-        if(hack===0){//There is an error that uploads the tasks twice, so I haven't really know what is going on, but this hack fixes it
-          hack++;
-          await db.collection("students").doc(userName.toUpperCase()).update({
-            doneTasks: newTempTasks,
-            tasks: tempTasks,
-          });
-        }
-        
+
+        await db.collection("students").doc(userName.toUpperCase()).update({
+          doneTasks: newTempTasks,
+          tasks: tempTasks,
+        });
+
         setLoading(false);
         Swal.fire({
           title: "¡Tarea entregada!",
           text: "Tu tarea ha sido entregada correctamente",
           icon: "success",
           confirmButtonText: "Volver",
-          onClose: refreshPage
+          onClose: refreshPage,
         });
       }
     });
   };
 
-  const refreshPage = ()=>{
+  const refreshPage = () => {
     window.location.reload();
-  }
-  const uploadFiles = async ()  => {
+  };
+  const uploadFiles = async () => {
     let urls = [];
     setLoading(true);
-    files.forEach((file,index)=>{
-      const uploadTask =  storage.ref(title + '/' + userName + '/'+ file.name).put(file);
+    files.forEach((file, index) => {
+      const uploadTask = storage
+        .ref(title + "/" + userName + "/" + file.name)
+        .put(file);
       uploadTask.on(
         "state_changed",
-        (snapshot) => {
-        },
+        (snapshot) => {},
         (error) => {
           Swal.fire({
             title: "No se ha podido subir el archivo",
@@ -116,34 +115,33 @@ function Task({ title, description, deliveryDate, index ,links,taskURL,id}) {
           setIsSent(true);
           storage
             .ref(title)
-            .child(userName + '/' + file.name)
+            .child(userName + "/" + file.name)
             .getDownloadURL()
             .then((url) => {
-              urls.push(url)
+              urls.push(url);
               setFilesCount(urls.length);
-              console.log(index,url,urls);
-              if(urls.length===files.length){
-                sendHomeWork(urls);
+              console.log(index, url, urls);
+              if (urls.length === files.length) {
+                if(hack===0){//There is an error that uploads the tasks twice, so I haven't really know what is going on, but this hack fixes it
+                  hack++;
+                  sendHomeWork(urls);
+                }
               }
             });
-         
         }
       );
-    })
-    
+    });
   };
 
   const handleChange = (e) => {
-    if (e.target.files.length>0) {
+    if (e.target.files.length > 0) {
       const files = [];
-      for(let i=0;i<e.target.files.length;i++){
+      for (let i = 0; i < e.target.files.length; i++) {
         files.push(e.target.files[i]);
       }
       setFiles(files);
       console.log(files);
     }
-
-    
   };
   return (
     <Card className="card">
@@ -155,7 +153,10 @@ function Task({ title, description, deliveryDate, index ,links,taskURL,id}) {
         <Typography color="textSecondary" className="margin">
           Fecha de entrega:{" "}
           {deliveryDate !== undefined &&
-            deliveryDate.toDate().toLocaleTimeString("es-MX", options).slice(0,-8)}
+            deliveryDate
+              .toDate()
+              .toLocaleTimeString("es-MX", options)
+              .slice(0, -8)}
         </Typography>
         <Typography color="textSecondary">{description}</Typography>
       </CardContent>
@@ -175,25 +176,29 @@ function Task({ title, description, deliveryDate, index ,links,taskURL,id}) {
         <CardContent>
           <Grid container spacing={3}>
             <Grid item xs={3}>
-              {taskURL&&<Button
-                variant="outlined"
-                color="primary"
-                href={taskURL}
-                startIcon={<AssignmentReturnedIcon />}
-                className="margin"
-              >
-                TAREA
-              </Button>}
-            
-              {links&&<Button
-                variant="outlined"
-                color="primary"
-                href={links}
-                target="_blank"
-                startIcon={<LinkIcon />}
-              >
-                Enlace
-              </Button>}
+              {taskURL && (
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  href={taskURL}
+                  startIcon={<AssignmentReturnedIcon />}
+                  className="margin"
+                >
+                  TAREA
+                </Button>
+              )}
+
+              {links && (
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  href={links}
+                  target="_blank"
+                  startIcon={<LinkIcon />}
+                >
+                  Enlace
+                </Button>
+              )}
             </Grid>
           </Grid>
           <Container maxWidth="xs">
@@ -221,25 +226,27 @@ function Task({ title, description, deliveryDate, index ,links,taskURL,id}) {
             ) : loading ? (
               <div>
                 <LinearProgress
-                className="save-loading"
-                color="secondary"
-                style={{ width: "100%", margin: "20px 0px" }}
-              />
-              <p style={{textAlign:'center'}}>{filesCount}/{files.length}</p>
+                  className="save-loading"
+                  color="secondary"
+                  style={{ width: "100%", margin: "20px 0px" }}
+                />
+                <p style={{ textAlign: "center" }}>
+                  {filesCount}/{files.length}
+                </p>
               </div>
             ) : (
               !isSent && (
                 <div>
                   <Button
-                  onClick={uploadFiles}
-                  color="secondary"
-                  variant="contained"
-                  component="span"
-                  style={{ width: "100%", margin: "20px 0px" }}
-                  endIcon={<Icon>send</Icon>}
-                >
-                  Entregar {files.length} fotos
-                </Button>
+                    onClick={uploadFiles}
+                    color="secondary"
+                    variant="contained"
+                    component="span"
+                    style={{ width: "100%", margin: "20px 0px" }}
+                    endIcon={<Icon>send</Icon>}
+                  >
+                    Entregar {files.length} fotos
+                  </Button>
                 </div>
               )
             )}
