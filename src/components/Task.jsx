@@ -68,13 +68,12 @@ function Task({ title, description, deliveryDate, index, links, taskURL, id }) {
           });
         }
 
-        let newTempTasks = tempTasks.splice(index, 1);
-        console.log(tempTasks);
-        console.log(newTempTasks);
-        console.log(tempDoneTasks);
+        tempTasks.splice(index, 1);
+        console.log(tempTasks,index);
+        console.log(tempDoneTasks,index);
 
         await db.collection("students").doc(userName.toUpperCase()).update({
-          doneTasks: newTempTasks,
+          doneTasks: tempDoneTasks,
           tasks: tempTasks,
         });
 

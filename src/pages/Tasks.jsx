@@ -21,7 +21,7 @@ export default function Tasks() {
     const getUserTasks = () => {
       db.collection("students").doc(userName).get().then((data)=>{
         if(data.data()!==undefined){
-          setTasks(data.data().tasks.reverse());
+          setTasks(data.data().tasks);
           setLoading(false);
         }
       });
@@ -50,7 +50,7 @@ export default function Tasks() {
   return (
     <Fragment>
       <TopNavigationBar index={0} />
-      {open&&<Alert severity="warning" onClose={() => {setOpen(false)}}>Sube todas las fotos que se indican.</Alert>}
+      {open&&<Alert severity="info" onClose={() => {setOpen(false)}}>Han habido cambios en la plataforma y se han solucionado problemas, lamentamos las posibles molestias.</Alert>}
       <Container maxWidth="md">
   <h2>¡Hola {userName}!</h2>
         <p className="welcome">

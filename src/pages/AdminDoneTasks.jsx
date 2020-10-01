@@ -6,12 +6,14 @@ import { db } from "../firebase";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import DoneTasksAdmin from "../components/DoneTasksAdmin";
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+import Alert from '@material-ui/lab/Alert';
 
 export default function AdminDoneTasks() {
   const user = localStorage.getItem("pass");
   const [passWord, setpassWord] = useState(user);
   const [doneTasks, setDoneTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [open,setOpen] = useState(true);
 
   useEffect(() => {
     const getUser = () => {
@@ -37,10 +39,10 @@ export default function AdminDoneTasks() {
           query.forEach((student) => {
             student.data().doneTasks.forEach((task) => {
               if (task.id === id) {
-                data.students.push({ name: student.id, ref: task.ref });
-                console.log(
-                  titleCase(student.id) + " Sí hizo la tarea" + task.ref
-                );
+                  console.log(
+                    titleCase(student.id) + " Sí hizo la tarea" + task.ref
+                  );
+                  data.students.push({ name: student.id, ref: task.ref });         
               }
             });
           });
@@ -66,6 +68,8 @@ export default function AdminDoneTasks() {
   return (
     <Fragment>
       <TopNavigationBarAdmin index={2} />
+      {open&&<Alert severity="info" onClose={() => {setOpen(false)}}>Hola maestra, soy el desarrollador de su página, este mensaje es la única forma directa de comunicarme con usted, entiendo que a veces puede ser dificil entender sobre tecnología. No se preocupe por eso, sólo quería avisar que estoy al pendiente de los detalles que pasan en su plataforma, así como errores y problemas que van saliendo y que voy solucionando, he actualizado algunas cosas y solucionado algunos errores, espero sea de su agrado<span role="img" />
+      😁</Alert>}
       <Container maxWidth="md">
         <h2>¡Hola maestra Adriana!</h2>
         <p className="welcome">

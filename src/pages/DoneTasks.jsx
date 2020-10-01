@@ -20,7 +20,7 @@ export default function DoneTasks() {
       docRef.get().then((doc)=>{
         if(doc.exists){
           console.log(doc.data());
-          setDoneTasks(doc.data().doneTasks.reverse());
+          setDoneTasks(doc.data().doneTasks);
           setLoading(false);
         }else{
           console.log(doc.exists)
