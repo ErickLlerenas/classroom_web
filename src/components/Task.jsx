@@ -21,9 +21,8 @@ import LinkIcon from "@material-ui/icons/Link";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
 function Task({ title, description, deliveryDate, index, links, taskURL, id }) {
-  const user = localStorage.getItem("userName");
-  const [userName] = useState(user);
   const classes = useStyles();
+  const [userName] = useState(localStorage.getItem("userName"));
   const [expanded, setExpanded] = useState(false);
   const [files, setFiles] = useState([]);
   const [options] = useState({

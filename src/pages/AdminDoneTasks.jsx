@@ -68,8 +68,7 @@ export default function AdminDoneTasks() {
   return (
     <Fragment>
       <TopNavigationBarAdmin index={2} />
-      {open&&<Alert severity="info" onClose={() => {setOpen(false)}}>Hola maestra, soy el desarrollador de su página, este mensaje es la única forma directa de comunicarme con usted, entiendo que a veces puede ser dificil entender sobre tecnología. No se preocupe por eso, sólo quería avisar que estoy al pendiente de los detalles que pasan en su plataforma, así como errores y problemas que van saliendo y que voy solucionando, he actualizado algunas cosas y solucionado algunos errores, espero sea de su agrado<span role="img" />
-      😁</Alert>}
+      {open&&<Alert severity="info" onClose={() => {setOpen(false)}}>Ahora los alumnos pueden eliminar y volver a entregar sus propias tareas si es que deciden hacerlo.</Alert>}
       <Container maxWidth="md">
         <h2>¡Hola maestra Adriana!</h2>
         <p className="welcome">

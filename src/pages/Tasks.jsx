@@ -7,7 +7,7 @@ import Task from "../components/Task";
 import { db } from "../firebase";
 import {Redirect} from 'react-router-dom';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import Alert from '@material-ui/lab/Alert';
+// import Alert from '@material-ui/lab/Alert';
 // import Button from '@material-ui/core/Button';
 
 export default function Tasks() {
@@ -15,7 +15,7 @@ export default function Tasks() {
   const [tasks,setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [userName,setUserName] = useState(user);
-  const [open,setOpen] = useState(true);
+  // const [open,setOpen] = useState(true);
 
   useEffect(() => {
     const getUserTasks = () => {
@@ -50,7 +50,7 @@ export default function Tasks() {
   return (
     <Fragment>
       <TopNavigationBar index={0} />
-      {open&&<Alert severity="info" onClose={() => {setOpen(false)}}>Han habido cambios en la plataforma y se han solucionado problemas, lamentamos las posibles molestias.</Alert>}
+      
       <Container maxWidth="md">
   <h2>¡Hola {userName}!</h2>
         <p className="welcome">

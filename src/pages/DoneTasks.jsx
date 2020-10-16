@@ -7,23 +7,23 @@ import { db } from "../firebase";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import SentTask from "../components/sentTask";
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+import Alert from '@material-ui/lab/Alert';
 
 export default function DoneTasks() {
   const user = localStorage.getItem("userName");
   const [userName, setUserName] = useState(user);
   const [doneTasks,setDoneTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [open,setOpen] = useState(true);
+
 
   useEffect(() => {
     const getDoneTasks = async () => {
       const docRef = db.collection("students").doc(userName);
       docRef.get().then((doc)=>{
         if(doc.exists){
-          console.log(doc.data());
           setDoneTasks(doc.data().doneTasks);
           setLoading(false);
-        }else{
-          console.log(doc.exists)
         }
       })
     };
@@ -50,6 +50,7 @@ export default function DoneTasks() {
   return (
     <Fragment>
       <TopNavigationBar index={1} />
+      {open&&<Alert severity="info" onClose={() => {setOpen(false)}}>Hola {userName}, ahora puedes volver a entregar tus tareas; sólamente eliminala presionando el ícono de basura y vuelvela a entregar.</Alert>}
       <Container maxWidth="md">
         <h2>¡Hola {userName}!</h2>
         <p className="welcome">
@@ -62,8 +63,8 @@ export default function DoneTasks() {
           <ErrorOutlineIcon className="delivered-icon"/>
           <p className="center-text">No tienes ninguna tarea entregada todavía</p>
           </div>}
-        {doneTasks.map((task)=>(
-          <SentTask title={task.title} description={task.description} key={task.id} deliveryDate={task.deliveryDate} urls={task.ref} links={task.links}/>
+        {doneTasks.map((task,index)=>(
+          <SentTask title={task.title} description={task.description} key={task.id} deliveryDate={task.deliveryDate} urls={task.ref} links={task.links} id={task.id} index={index}/>
         ))}
       </Container>
       <WhatsAppButton userName={titleCase(userName)}/>
